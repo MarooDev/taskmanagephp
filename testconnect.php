@@ -3,7 +3,7 @@
 require 'vendor/autoload.php';
 
 
-use App\DbConnect;
+use App\Services\DbConnect;
 use Symfony\Component\Dotenv\Dotenv;
 
 
@@ -18,9 +18,17 @@ try {
     $tables = $stmt->fetchAll();
 
     echo "<br>List of tables in the database: ";
-    foreach ($tables as $table) {
-        echo $table['Tables_in_' . $_ENV['DB_NAME']] . "<br>";
+
+    if (!empty($tables)) {
+        foreach ($tables as $table) {
+            echo $table['Tables_in_' . $_ENV['DB_NAME']] . "<br>";
+        }
+    } else {
+        echo "No tables in the database";
     }
+
 } catch (PDOException $e) {
     die("Database connection error: " . $e->getMessage());
 }
+
+
